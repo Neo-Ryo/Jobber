@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,16 +13,11 @@ import useFetch from "../../../hooks/useFetch";
 import styles from "./popularjobs.style";
 
 const Popularjobs = () => {
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState(false);
+  const router = useRouter();
   const { data, isLoading, error } = useFetch("search", {
     query: "React developper",
   });
-  console.log("data: ", data);
-  console.log("isLoading: ", isLoading);
-  console.log("error: ", error);
-  // useEffect(() => {
-  // }, [isLoading]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -40,7 +34,14 @@ const Popularjobs = () => {
         ) : (
           <FlatList
             data={data}
-            renderItem={({ item }) => <PopularJobCard item={item} />}
+            renderItem={({ item }) => (
+              <PopularJobCard
+                item={item}
+                handleCardPress={() =>
+                  router.push(`/job-details/${item.job_id}`)
+                }
+              />
+            )}
             keyExtractor={(item) => item?.job_id}
             contentContainerStyle={{
               columnGap: SIZES.medium,
